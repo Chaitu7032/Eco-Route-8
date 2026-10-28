@@ -159,7 +159,22 @@ export class ApiClient {
   // Carbon Observations
   public async getLatestCarbon(regionCode?: string): Promise<CarbonObservationResponse[]> {
     const query = regionCode ? `?region_code=${regionCode}` : "";
-    return this.request<CarbonObservationResponse[]>(`/api/v1/carbon/latest${query}`);
+    const rawList = await this.request<any[]>(`/api/v1/carbon/latest${query}`);
+    return rawList.map((item) => ({
+      ...item,
+      carbon_intensity_gco2:
+        item.carbon_intensity_gco2 != null
+          ? Number(item.carbon_intensity_gco2)
+          : item.carbon_intensity != null
+          ? Number(item.carbon_intensity)
+          : null,
+      carbon_intensity:
+        item.carbon_intensity != null
+          ? Number(item.carbon_intensity)
+          : item.carbon_intensity_gco2 != null
+          ? Number(item.carbon_intensity_gco2)
+          : null,
+    }));
   }
 
   // Analytics

@@ -222,14 +222,17 @@ export interface RegionResponse {
 }
 
 export interface CarbonObservationResponse {
-  id: string;
+  id?: string;
   region_id: string;
   region_code: string;
-  carbon_intensity_gco2: number | null;
-  quality: CarbonQuality;
-  source: CarbonSource;
+  carbon_intensity?: number | null;
+  carbon_intensity_gco2?: number | null;
+  quality?: CarbonQuality;
+  data_quality?: string;
+  source: CarbonSource | string;
   is_trustworthy: boolean;
-  observed_at: string;
+  observed_at?: string;
+  observation_timestamp?: string;
 }
 
 export interface AnalyticsSummary {
@@ -239,10 +242,10 @@ export interface AnalyticsSummary {
   waiting_jobs: number;
   running_jobs: number;
   total_attempts: number;
-  total_energy_kwh: number;
-  total_co2eq_grams: number;
-  avg_job_duration_seconds: number;
-  carbon_savings_pct_vs_baseline: number;
+  total_energy_kwh: number | string;
+  total_co2eq_grams: number | string;
+  avg_job_duration_seconds: number | string;
+  carbon_savings_pct_vs_baseline: number | string;
 }
 
 export interface ExperimentCreatePayload {

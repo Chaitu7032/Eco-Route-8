@@ -172,8 +172,8 @@ export function AnalyticsOverview({
     );
   }
 
-  // Format real emissions from summary
-  const totalCo2 = summary?.total_co2eq_grams ?? 0;
+  // Format real emissions from summary (API Decimal serialized as string or number)
+  const totalCo2 = Number(summary?.total_co2eq_grams ?? 0);
   const co2Formatted =
     totalCo2 >= 1000000
       ? `${(totalCo2 / 1000000).toFixed(2)} t`
@@ -182,7 +182,7 @@ export function AnalyticsOverview({
       : `${totalCo2.toFixed(1)} g`;
 
   // Format real energy from summary
-  const totalKwh = summary?.total_energy_kwh ?? 0;
+  const totalKwh = Number(summary?.total_energy_kwh ?? 0);
   const energyFormatted =
     totalKwh >= 1000
       ? `${(totalKwh / 1000).toFixed(2)} MWh`

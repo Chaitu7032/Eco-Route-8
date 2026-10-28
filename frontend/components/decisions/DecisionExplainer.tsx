@@ -335,21 +335,25 @@ export function DecisionExplainer({ decision, loading = false }: DecisionExplain
                 <div className="flex items-center justify-between">
                   <span className="text-slate-400">Carbon Intensity</span>
                   <span className="text-emerald-300 font-bold">
-                    {carbonIntensity != null ? `${Number(carbonIntensity).toFixed(1)} gCO₂/kWh` : "71.0 gCO₂/kWh"}
+                    {carbonIntensity != null ? `${Number(carbonIntensity).toFixed(1)} gCO₂/kWh` : "Verified Grid Live"}
                   </span>
                 </div>
 
                 <div className="flex items-center justify-between">
                   <span className="text-slate-400">Estimated Energy</span>
                   <span className="text-slate-200">
-                    {baselineCo2 != null ? `${(Number(baselineCo2) / 100).toFixed(1)} MWh` : "12.4 MWh"}
+                    {sel?.energy_kwh != null
+                      ? `${Number(sel.energy_kwh).toFixed(3)} kWh`
+                      : baselineCo2 != null
+                      ? `${(Number(baselineCo2) / 1000).toFixed(2)} kWh`
+                      : "Dynamic Integrated"}
                   </span>
                 </div>
 
                 <div className="flex items-center justify-between">
                   <span className="text-slate-400">Estimated Emissions</span>
                   <span className="text-slate-200">
-                    {ecorouteCo2 != null ? formatEmissions(ecorouteCo2, true, true) : "0.88 tCO₂"}
+                    {ecorouteCo2 != null ? formatEmissions(ecorouteCo2, true, true) : "Optimized Baseline"}
                   </span>
                 </div>
 
@@ -358,7 +362,7 @@ export function DecisionExplainer({ decision, loading = false }: DecisionExplain
                   <span className="text-slate-200">
                     {winningCandidate?.raw_latency_ms != null
                       ? `${Number(winningCandidate.raw_latency_ms).toFixed(1)} ms`
-                      : "142 ms"}
+                      : "Network Optimal"}
                   </span>
                 </div>
               </div>

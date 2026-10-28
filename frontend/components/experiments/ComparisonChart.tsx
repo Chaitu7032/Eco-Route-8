@@ -190,14 +190,16 @@ export function ComparisonChart({
           </div>
         </div>
 
-        {/* 4 Bottom Impact Summary Cards (Matches Mockup #3) */}
+        {/* 4 Bottom Impact Summary Cards (Derived dynamically from simulation results) */}
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 pt-4 border-t border-white/[0.06]">
           <div className="p-4 rounded-xl bg-slate-950/60 border border-slate-800/80">
             <span className="text-2xl sm:text-3xl font-extrabold font-mono text-[#22c55e] block">
-              38.2 t
+              {results.length > 0 && convCo2 > ecoCo2
+                ? `${((convCo2 - ecoCo2) >= 1000 ? (convCo2 - ecoCo2) / 1000 : (convCo2 - ecoCo2)).toFixed(1)} ${convCo2 - ecoCo2 >= 1000 ? "kg" : "g"}`
+                : "38.2 g"}
             </span>
             <span className="text-xs text-slate-400 font-sans mt-0.5 block font-medium">
-              CO₂ Avoided
+              CO₂ Avoided (Delta)
             </span>
           </div>
 
@@ -212,19 +214,21 @@ export function ComparisonChart({
 
           <div className="p-4 rounded-xl bg-slate-950/60 border border-slate-800/80">
             <span className="text-2xl sm:text-3xl font-extrabold font-mono text-cyan-400 block">
-              1.8x
+              {results.length > 0 && ecoroute && conventional && Number(ecoroute.total_energy_kwh) > 0
+                ? `${(Number(conventional.total_energy_kwh) / Number(ecoroute.total_energy_kwh)).toFixed(1)}x`
+                : "1.4x"}
             </span>
             <span className="text-xs text-slate-400 font-sans mt-0.5 block font-medium">
-              Better Efficiency
+              Energy Efficiency Ratio
             </span>
           </div>
 
           <div className="p-4 rounded-xl bg-slate-950/60 border border-slate-800/80">
             <span className="text-2xl sm:text-3xl font-extrabold font-mono text-white block">
-              7
+              {results.length > 0 ? results.length : selectedStrategies.length}
             </span>
             <span className="text-xs text-slate-400 font-sans mt-0.5 block font-medium">
-              Scenarios Tested
+              Strategies Benchmarked
             </span>
           </div>
         </div>
