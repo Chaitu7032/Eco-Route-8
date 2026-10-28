@@ -5,6 +5,7 @@ import { apiClient } from "@/lib/api-client";
 import { CarbonObservationResponse, RegionResponse } from "@/lib/types";
 import { RegionGrid } from "@/components/regions/RegionGrid";
 import { EarthGlobe } from "@/components/globe/EarthGlobe";
+import { LoadingScreen } from "@/components/ui/LoadingScreen";
 import { Globe, RefreshCw, ShieldCheck, Activity, Zap, Server, CheckCircle2, ArrowRight } from "lucide-react";
 
 export default function RegionsPage() {
@@ -46,6 +47,15 @@ export default function RegionsPage() {
 
   const selectedRegion = regions.find((r) => r.code === selectedRegionCode) || regions[0] || null;
   const selectedObs = selectedRegion ? carbonMap[selectedRegion.code] : null;
+
+  if (loading) {
+    return (
+      <LoadingScreen
+        message="Resolving Global Cloud Topology..."
+        submessage="Querying multi-region host capacities and Electricity Maps carbon zones"
+      />
+    );
+  }
 
   return (
     <div className="space-y-8 font-sans">

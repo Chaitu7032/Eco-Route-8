@@ -378,14 +378,57 @@ export function DecisionExplainer({ decision, loading = false }: DecisionExplain
       </div>
 
       {/* Rationale & Deferral Info */}
-      <div className="glass-panel p-6 sm:p-7 rounded-2xl border border-white/[0.08] space-y-3">
-        <div className="flex items-center gap-2 border-b border-white/[0.06] pb-3">
-          <Compass className="w-4 h-4 text-[#22c55e]" />
-          <h4 className="text-xs font-semibold text-slate-200 uppercase tracking-wider font-mono">
-            Algorithmic Decision Provenance
-          </h4>
+      <div className="glass-panel p-6 sm:p-7 rounded-2xl border border-white/[0.08] space-y-4">
+        <div className="flex items-center justify-between border-b border-white/[0.06] pb-3">
+          <div className="flex items-center gap-2">
+            <Compass className="w-4 h-4 text-[#22c55e]" />
+            <h4 className="text-xs font-semibold text-slate-200 uppercase tracking-wider font-mono">
+              Algorithmic Decision Provenance &amp; Deferral Analysis
+            </h4>
+          </div>
+          <span className="text-[11px] font-mono px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 font-bold">
+            Policy: {decisionMode}
+          </span>
         </div>
-        <p className="text-sm text-slate-200 leading-relaxed font-sans">{rationale}</p>
+
+        {/* Clear Explanation Cards: Immediate vs Deferred */}
+        <div className="p-4 rounded-xl bg-slate-950/70 border border-slate-800 space-y-3 font-sans">
+          <div className="flex items-start gap-3">
+            <div className="w-6 h-6 rounded-full bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center shrink-0 mt-0.5">
+              <Check className="w-3.5 h-3.5 text-emerald-400 stroke-[3]" />
+            </div>
+            <div className="space-y-1">
+              <div className="text-xs font-bold text-slate-100">
+                Decision Summary: Dispatched to Best Candidate ({selectedRegionCode || "Optimal"}) Immediately
+              </div>
+              <p className="text-xs text-slate-300 leading-relaxed">
+                {rationale}
+              </p>
+            </div>
+          </div>
+
+          {/* Context Explainer Box: What does this mean? */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3 pt-3 border-t border-slate-800/80 text-xs">
+            <div className="p-3 rounded-lg bg-slate-900/60 border border-slate-800">
+              <div className="text-slate-400 font-mono text-[10px] uppercase font-bold tracking-wider mb-1 flex items-center gap-1.5">
+                <Clock className="w-3 h-3 text-cyan-400" /> Why Not Defer to the Future?
+              </div>
+              <p className="text-slate-300 text-[11px] leading-relaxed">
+                EcoRoute deferral policy requires a verified future grid forecast showing at least a <strong className="text-white">15.0% carbon drop</strong> within the job&apos;s deadline slack window. Because immediate dispatch in <span className="text-emerald-400 font-mono font-bold">{selectedRegionCode || "the winner"}</span> already provides the lowest feasible cost score, holding the workload would introduce unnecessary latency without guaranteed carbon benefits.
+              </p>
+            </div>
+
+            <div className="p-3 rounded-lg bg-slate-900/60 border border-slate-800">
+              <div className="text-slate-400 font-mono text-[10px] uppercase font-bold tracking-wider mb-1 flex items-center gap-1.5">
+                <Zap className="w-3 h-3 text-emerald-400" /> Best Candidate vs Expected Range
+              </div>
+              <p className="text-slate-300 text-[11px] leading-relaxed">
+                Among all {candidateRankings.length} candidate regions evaluated, composite scores ranged from <span className="text-emerald-400 font-mono font-bold">{winningScore} (Rank #1)</span> up to <span className="text-slate-400 font-mono">{candidateRankings.length > 1 ? Number((candidateRankings[candidateRankings.length - 1] as any).composite_score ?? (candidateRankings[candidateRankings.length - 1] as any).cost_score_jr ?? 0.85).toFixed(2) : "0.85"}</span>. Region <span className="text-emerald-400 font-mono font-bold">{selectedRegionCode}</span> minimized total penalty $J_r$.
+              </p>
+            </div>
+          </div>
+        </div>
+
         {fallbackReason && (
           <div className="p-3.5 rounded-xl bg-amber-500/10 border border-amber-500/30 text-amber-300 text-xs flex items-start gap-2.5">
             <AlertTriangle className="w-4 h-4 shrink-0 mt-0.5 text-amber-400" />

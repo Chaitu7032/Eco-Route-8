@@ -5,6 +5,7 @@ import { apiClient } from "@/lib/api-client";
 import { JobCreatePayload, JobResponse } from "@/lib/types";
 import { WorkloadForm } from "@/components/jobs/WorkloadForm";
 import { JobLifecycleTable } from "@/components/jobs/JobLifecycleTable";
+import { LoadingScreen } from "@/components/ui/LoadingScreen";
 import { Layers, Filter, RefreshCw, Database, Server } from "lucide-react";
 
 export default function JobsPage() {
@@ -88,6 +89,15 @@ export default function JobsPage() {
 
   const dbStatus = health?.components?.database?.status || "connected";
   const redisStatus = health?.components?.redis?.status || "connected";
+
+  if (loading) {
+    return (
+      <LoadingScreen
+        message="Loading Workload Telemetry..."
+        submessage="Connecting to distributed execution queue and PostgreSQL durable state"
+      />
+    );
+  }
 
   return (
     <div className="space-y-8 font-sans">

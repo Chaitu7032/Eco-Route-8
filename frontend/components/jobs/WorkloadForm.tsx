@@ -352,9 +352,18 @@ export function WorkloadForm({ onSubmit, loading = false }: WorkloadFormProps) {
         </button>
       </form>
 
-      {/* Right Column: Ultra-Realistic 3D Animated Pipeline Execution Visualizer */}
+      {/* Right Column: Dynamic Workload-Linked Pipeline Execution Visualizer */}
       <div className="lg:col-span-5 flex flex-col">
-        <PipelineVisualizer isSubmitting={isSubmitting} />
+        <PipelineVisualizer
+          isSubmitting={isSubmitting}
+          workloadName={workloadName}
+          workloadType={workloadType}
+          cpuCores={cpuCores}
+          memoryGb={memoryGb}
+          duration={duration}
+          deadlineOffset={deadlineOffset}
+          priority={priority}
+        />
       </div>
     </div>
   );

@@ -30,9 +30,32 @@ export function SubscoreBreakdown({ candidates = [], weights }: SubscoreBreakdow
 
   return (
     <div className="space-y-4">
+      {/* Purpose & Mathematical Explanation Banner */}
+      <div className="p-4 rounded-xl bg-slate-950/70 border border-slate-800 space-y-2">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-800/80 pb-2">
+          <div className="flex items-center gap-2">
+            <span className="w-2 h-2 rounded-full bg-emerald-400" />
+            <h5 className="font-bold text-slate-100 font-sans text-xs">
+              Multi-Objective Penalty Score Decomposition ($J_r$)
+            </h5>
+          </div>
+          <span className="text-[11px] font-mono text-emerald-400 font-bold">
+            Lower Score = Better Candidate (Rank #1 Wins)
+          </span>
+        </div>
+        <p className="text-xs text-slate-300 leading-relaxed font-sans">
+          This section breaks down <strong className="text-white">why each region ranked where it did</strong>. The horizontal stacked bar visualizes each factor&apos;s penalty contribution:
+          <span className="text-emerald-400 font-mono"> Carbon (40%)</span>,
+          <span className="text-blue-400 font-mono"> Execution Duration (30%)</span>,
+          <span className="text-purple-400 font-mono"> Host Utilization (20%)</span>, and
+          <span className="text-cyan-400 font-mono"> Network Latency (10%)</span>.
+          Raw physical units (gCO₂, seconds, %, ms) are normalized to a $[0.0, 1.0]$ scale ($n$) across all candidate regions so they can be mathematically combined.
+        </p>
+      </div>
+
       <div className="text-xs text-slate-400 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
         <span className="font-semibold text-slate-300 font-mono">
-          Multi-Objective Contributions: <span className="text-emerald-400">J_r = w_C·N(C) + w_T·N(T) + w_U·N(U) + w_L·N(L)</span>
+          Formula: <span className="text-emerald-400 font-bold">J_r = 0.40·N(Carbon) + 0.30·N(Duration) + 0.20·N(Util) + 0.10·N(Latency)</span>
         </span>
         <div className="flex flex-wrap items-center gap-3 font-mono text-[11px]">
           <span className="flex items-center gap-1 text-emerald-400">

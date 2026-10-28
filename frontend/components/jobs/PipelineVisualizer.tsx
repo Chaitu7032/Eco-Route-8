@@ -19,6 +19,13 @@ import {
 interface PipelineVisualizerProps {
   isSubmitting?: boolean;
   onStepComplete?: (step: number) => void;
+  workloadName?: string;
+  workloadType?: string;
+  cpuCores?: number;
+  memoryGb?: number;
+  duration?: number;
+  deadlineOffset?: number;
+  priority?: number;
 }
 
 interface StepInfo {
@@ -67,12 +74,62 @@ const pipelineSteps: StepInfo[] = [
   },
 ];
 
-export function PipelineVisualizer({ isSubmitting = false }: PipelineVisualizerProps) {
+export function PipelineVisualizer({
+  isSubmitting = false,
+  workloadName = "vision-training-02",
+  workloadType = "TRAINING",
+  cpuCores = 8,
+  memoryGb = 32,
+  duration = 20,
+  deadlineOffset = 1800,
+  priority = 5,
+}: PipelineVisualizerProps) {
   const [activeStep, setActiveStep] = useState<number>(1);
   const [isSimulating, setIsSimulating] = useState<boolean>(false);
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
 
-  // Execution flow animation: only triggers during active workload submission or explicit single-shot trace
+  // Dynamically generated steps reflecting the actual workload being configured/deployed
+  const dynamicSteps: StepInfo[] = [
+    {
+      num: 1,
+      title: `Analyzing ${workloadName}`,
+      subtitle: `${cpuCores} vCPU • ${memoryGb} GB RAM • Priority ${priority}`,
+      details: `Validating demand profile (${cpuCores} cores, ${memoryGb} GB) and calculating slack margin (${deadlineOffset}s buffer)`,
+      icon: Cpu,
+    },
+    {
+      num: 2,
+      title: "Querying Grid Carbon Telemetry",
+      subtitle: "Electricity Maps real-time signal stream",
+      details: `Fetching live gCO₂/kWh across available regions for ${workloadType.toLowerCase()} execution window`,
+      icon: Globe,
+    },
+    {
+      num: 3,
+      title: "Evaluating Regional Hard Constraints",
+      subtitle: `Feasibility check for ${duration}s run time`,
+      details: `Testing host capacity >= ${cpuCores} cores, RAM >= ${memoryGb} GB, and ETA <= deadline`,
+      icon: Sliders,
+    },
+    {
+      num: 4,
+      title: "Multi-Objective Ranking ($J_r$)",
+      subtitle: "Minimizing Carbon, Time, Util & Latency",
+      details: `Scoring feasible candidates with weights: w_C(0.40), w_T(0.30), w_U(0.20), w_L(0.10)`,
+      icon: Sparkles,
+    },
+    {
+      num: 5,
+      title: "Atomic Dispatch to Worker Queue",
+      subtitle: "Zero duplicate execution guarantee",
+      details: `Enqueuing ${workloadName} with durable PostgreSQL CAS claim & idempotency token`,
+      icon: Zap,
+    },
+  ];
+
+  const pipelineSteps = dynamicSteps;
+
+  // Execution flow animation: triggers during submission or manual preview
   useEffect(() => {
     if (!isSubmitting && !isSimulating) return;
 

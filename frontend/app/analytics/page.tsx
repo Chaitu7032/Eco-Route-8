@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { apiClient } from "@/lib/api-client";
 import { AnalyticsSummary } from "@/lib/types";
 import { AnalyticsOverview } from "@/components/analytics/AnalyticsOverview";
+import { LoadingScreen } from "@/components/ui/LoadingScreen";
 import { BarChart3, RefreshCw, Leaf, Zap } from "lucide-react";
 
 export default function AnalyticsPage() {
@@ -34,6 +35,15 @@ export default function AnalyticsPage() {
     const interval = setInterval(fetchAnalytics, 10000);
     return () => clearInterval(interval);
   }, []);
+
+  if (loading) {
+    return (
+      <LoadingScreen
+        message="Compiling Carbon Audit Analytics..."
+        submessage="Calculating emissions savings against non-carbon conventional baselines"
+      />
+    );
+  }
 
   return (
     <div className="space-y-8 font-sans">

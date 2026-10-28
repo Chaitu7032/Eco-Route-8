@@ -5,6 +5,7 @@ import { useSearchParams } from "next/navigation";
 import { apiClient } from "@/lib/api-client";
 import { SchedulingDecisionResponse } from "@/lib/types";
 import { DecisionExplainer } from "@/components/decisions/DecisionExplainer";
+import { LoadingScreen } from "@/components/ui/LoadingScreen";
 import { Cpu, RefreshCw, BookOpen, Search } from "lucide-react";
 
 function DecisionsContent() {
@@ -81,6 +82,15 @@ function DecisionsContent() {
       setLoading(false);
     }
   };
+
+  if (loading && !selectedDecision) {
+    return (
+      <LoadingScreen
+        message="Loading Scheduling Decisions..."
+        submessage="Querying algorithmic decision provenance, candidate rankings, and subscore decomposition"
+      />
+    );
+  }
 
   return (
     <div className="space-y-8">

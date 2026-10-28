@@ -18,6 +18,7 @@ import { WorkloadForm } from "@/components/jobs/WorkloadForm";
 import { JobLifecycleTable } from "@/components/jobs/JobLifecycleTable";
 import { RegionGrid } from "@/components/regions/RegionGrid";
 import { SystemStatusBar } from "@/components/layout/SystemStatusBar";
+import { LoadingScreen } from "@/components/ui/LoadingScreen";
 import {
   Layers,
   Globe,
@@ -80,6 +81,15 @@ export default function LandingPage() {
     setRefreshing(true);
     loadData();
   };
+
+  if (loading) {
+    return (
+      <LoadingScreen
+        message="Booting EcoRoute Spatial Engine..."
+        submessage="Synchronizing real-time grid carbon feeds and cloud topology"
+      />
+    );
+  }
 
   const handleCreateJob = async (payload: JobCreatePayload) => {
     await apiClient.createJob(payload);

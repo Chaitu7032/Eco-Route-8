@@ -9,6 +9,7 @@ import {
 } from "@/lib/types";
 import { BenchmarkRunner } from "@/components/experiments/BenchmarkRunner";
 import { ComparisonChart } from "@/components/experiments/ComparisonChart";
+import { LoadingScreen } from "@/components/ui/LoadingScreen";
 import { FlaskConical, History, BookOpen, Play } from "lucide-react";
 
 export default function ExperimentsPage() {
@@ -82,6 +83,15 @@ export default function ExperimentsPage() {
       setBenchmarking(false);
     }
   };
+
+  if (loading) {
+    return (
+      <LoadingScreen
+        message="Loading Benchmarks & Simulation Results..."
+        submessage="Retrieving multi-variant experiment runs and historical metrics"
+      />
+    );
+  }
 
   return (
     <div className="space-y-8 font-sans">
