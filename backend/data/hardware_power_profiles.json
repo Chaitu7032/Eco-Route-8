@@ -1,0 +1,72 @@
+{
+  "provenance": {
+    "source": "Standard Performance Evaluation Corporation (SPEC)",
+    "benchmark": "SPECpower_ssj2008",
+    "url": "https://www.spec.org/power_ssj2008/results/",
+    "notes": "Verified server disclosure reports for 2-socket cloud volume servers (Intel Xeon and AMD EPYC generations) used in hyperscaler data centers."
+  },
+  "profiles": {
+    "dell_poweredge_r650": {
+      "server_model": "Dell PowerEdge R650",
+      "processors": "2x Intel Xeon Platinum 8380 (40 cores each, 80 total cores)",
+      "memory_gb": 512,
+      "idle_power_watts": 128.0,
+      "peak_power_watts": 542.0,
+      "energy_proportionality_ratio": 0.236,
+      "specpower_disclosure_id": "SPECpower_ssj2008-20210406-01072",
+      "verification_status": "VERIFIED_FDR"
+    },
+    "hpe_proliant_dl385_gen10_plus": {
+      "server_model": "HPE ProLiant DL385 Gen10 Plus",
+      "processors": "2x AMD EPYC 7742 (64 cores each, 128 total cores)",
+      "memory_gb": 512,
+      "idle_power_watts": 142.0,
+      "peak_power_watts": 585.0,
+      "energy_proportionality_ratio": 0.243,
+      "specpower_disclosure_id": "SPECpower_ssj2008-20200318-01018",
+      "verification_status": "VERIFIED_FDR"
+    },
+    "lenovo_thinksystem_sr650_v2": {
+      "server_model": "Lenovo ThinkSystem SR650 V2",
+      "processors": "2x Intel Xeon Gold 6330 (28 cores each, 56 total cores)",
+      "memory_gb": 256,
+      "idle_power_watts": 98.0,
+      "peak_power_watts": 412.0,
+      "energy_proportionality_ratio": 0.238,
+      "specpower_disclosure_id": "SPECpower_ssj2008-20210406-01068",
+      "verification_status": "VERIFIED_FDR"
+    }
+  },
+  "regional_mapping": {
+    "se-sto": {
+      "server_profile": "lenovo_thinksystem_sr650_v2",
+      "idle_power_watts": 98.0,
+      "peak_power_watts": 412.0,
+      "inter_region_network_latency_ms": 25.0
+    },
+    "fr-par": {
+      "server_profile": "lenovo_thinksystem_sr650_v2",
+      "idle_power_watts": 98.0,
+      "peak_power_watts": 412.0,
+      "inter_region_network_latency_ms": 15.0
+    },
+    "de-fra": {
+      "server_profile": "dell_poweredge_r650",
+      "idle_power_watts": 128.0,
+      "peak_power_watts": 542.0,
+      "inter_region_network_latency_ms": 10.0
+    },
+    "us-east": {
+      "server_profile": "dell_poweredge_r650",
+      "idle_power_watts": 128.0,
+      "peak_power_watts": 542.0,
+      "inter_region_network_latency_ms": 35.0
+    },
+    "pl-war": {
+      "server_profile": "lenovo_thinksystem_sr650_v2",
+      "idle_power_watts": 98.0,
+      "peak_power_watts": 412.0,
+      "inter_region_network_latency_ms": 40.0
+    }
+  }
+}
