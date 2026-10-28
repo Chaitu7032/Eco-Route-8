@@ -73,9 +73,28 @@ export default function LandingPage() {
 
   useEffect(() => {
     loadData();
-    const interval = setInterval(loadData, 10000);
-    return () => clearInterval(interval);
+
+    const interval = setInterval(() => {
+      // Pause polling when browser tab is hidden/backgrounded to avoid wasteful queries
+      if (typeof document !== "undefined" && document.visibilityState === "hidden") {
+        return;
+      }
+      loadData();
+    }, 30000);
+
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === "visible") {
+        loadData();
+      }
+    };
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+
+    return () => {
+      clearInterval(interval);
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
+    };
   }, []);
+
 
   const handleManualRefresh = () => {
     setRefreshing(true);
